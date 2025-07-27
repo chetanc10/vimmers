@@ -1,7 +1,7 @@
 " Makes search act like search in modern browsers
 set incsearch
 
-# enable smart indent
+" enable smart indent
 set smartindent
 
 " tabstop and tab-shift-width
