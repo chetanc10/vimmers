@@ -1,0 +1,13 @@
+
+" Always use 'vimplugs' command to install and manage new plugins!
+
+call plug#begin()
+
+Plug 'tpope/vim-fugitive'
+Plug 'preservim/nerdtree'
+Plug 'joe-skb7/cscope-maps'
+Plug 'vim-scripts/VisIncr'
+Plug 'vim-scripts/comments.vim'
+Plug 'vim-scripts/taglist.vim'
+
+call plug#end()

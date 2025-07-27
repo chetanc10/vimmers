@@ -1,0 +1,43 @@
+#!/bin/bash
+
+scriptName=${BASH_SOURCE[0]}
+
+_usage()
+{
+	printf "Usage: $scriptName <action> [plugin]
+<action>: Mandatory - actions listed below:
+install [plugin] - install given vim plugin from github
+                   e.g. for plugin - tpope/vim-sensible or vim-scripts/jcommenter.vim, etc
+remove [plugin]  - remove a plugin
+update           - updates plugins installed via vim-plug all at once
+"
+}
+
+vimplug_rcf=${HOME}/.vim-plug-vimrc
+
+[ ! -f ${vimplug_rcf} ] && echo "Error: ${vimplug_rcf} - file not found!" && exit -1
+
+while [ $# -gt 0 ]; do
+	opt=$1
+	case $opt in
+		install)
+			[ -z "$2" ] && echo "Error: install needs a plugin name!" && _usage -2
+			plug_end_line=$(grep -n '^call plug#end()' "$vimplug_rcf" | cut -d: -f1)
+			[[ -z "$plug_end_line" ]] && echo "Error: ${vimplug_rcf} has invalid vim-plug call syntax" && exit -3
+			sed -i "${plug_end_line}i $plugin_line" ${vimplug_rcf}
+			vim -c ":PlugInstall"
+			;;
+		update)
+			vim -c ":PlugUpdate"
+			;;
+		remove)
+			epath="$(printf '%s\n' "$pkg_dir/basherbee-rc" | sed 's/\//\\\//g')"
+			sed -i "/${epath}/d" ${vimplug_rcf}
+			vim -c ":PlugClean"
+			;;
+		*) _usage 0
+			;;
+	esac
+done
+
+exit 0

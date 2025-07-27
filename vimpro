@@ -1,0 +1,112 @@
+#!/bin/bash
+
+gUsageString="
+Usage: devimpro.sh <option>
+Options:
+-i <file>             - Indent a file
+-I <dir>              - Indent all files in a directory
+-r <file> <old> <new> - Replace old string with new string in a file
+-R <dir> <old> <new>  - Replace old string with new string in all files in a directory
+-l <file> <print-fn>  - Replace a print-function interactively with syslog with LOG levels in a file
+-L <dir> <print-fn>   - Replace a print-function interactively with syslog with LOG levels in all files in a directory
+
+NOTES:
+<file> - this is actually absolute/relative path of a file
+<dir> - this is actually absolute/relative path of a directory to operate recursively
+"
+
+DisplayUsageFn ()
+{
+	local st=$1
+	shift
+	[ $st -ne 0 ] && echo "ERROR: ${@}"
+	printf "${gUsageString}\n"
+	exit $st
+}
+
+ValidateFilePathFn ()
+{
+	[ ! -f $1 ] && DisplayUsageFn -3 "$1: No such file"
+}
+
+ValidateDirPathFn ()
+{
+	[ ! -d $1 ] && DisplayUsageFn -4 "$1: No such directory"
+}
+
+vimCallFn ()
+{
+	local f="${1}"
+	local vfunc="${2}"
+	shift 2 # shift past filename and vim function name
+	local arglist=""
+	if [ $# -gt 0 ]; then
+		[ -d "$f" ] && arglist="'$f', '$1'" || arglist="'$1'"
+		shift; # shift past this argument to next one
+		while [[ $# -gt 0 ]]; do
+			arglist="${arglist}, '$1'"
+			shift; # shift past this argument to next one
+		done
+	fi
+
+	vim $f -c"source ${vimpro_vim_file}" -c"call $vfunc (${arglist})"
+}
+
+src="${BASH_SOURCE[0]}"
+while [ -h "$src" ]; do # resolve $src until the file is no longer a symlink
+  dir="$(cd -P "$(dirname "$src")" >/dev/null 2>&1 && pwd)"
+  src="$(readlink "$src")"
+  [[ $src != /* ]] && src="$dir/$src" # if relative symlink
+done
+vimpro_vim_file="$(cd -P "$(dirname "$src")" >/dev/null 2>&1 && pwd)/vimpro.vim"
+[ ! -f ${vimpro_vim_file} ] && echo "ERROR: ${vimpro_vim_file} not found!" && exit -1
+
+#If no arguments given, display help string and exit
+[ $# -eq 0 ] && DisplayUsageFn 0 "Need proper arguments"
+
+while [[ $# -gt 0 ]]; do
+	opt="$1"
+	case $opt in
+		-i)
+			ValidateFilePathFn $2
+			vimCallFn $2 IndentThisFile
+			shift; shift # shift past current argument and value
+			;;
+		-I)
+			ValidateDirPathFn $2
+			vimCallFn $2 IndentAllFiles
+			shift; shift # shift past current argument and value
+			;;
+		-r)
+			ValidateFilePathFn $2
+			read -p "Replace $3 with $4 in file $2? (y|n): " ok
+			[ "$ok" == "y" ] && vimCallFn $2 ReplaceStringInThisFile $3 $4
+			shift 2 # shift past current argument and value
+			shift 2 # shift past old and new string args
+			;;
+		-R)
+			ValidateDirPathFn $2
+			read -p "Replace $3 with $4 in all files in directory $2? (y|n): " ok
+			[ "$ok" == "y" ] && vimCallFn $2 ReplaceStringInAllFiles $3 $4
+			shift 2 # shift past current argument and value
+			shift 2 # shift past old and new string args
+			;;
+		-l)
+			ValidateFilePathFn $2
+			vimCallFn $2 ConvertToSyslog $3 "single"
+			shift 2 # shift past current argument and value
+			shift # shift past old print-function arg
+			;;
+		-L)
+			ValidateDirPathFn $2
+			vimCallFn $2 ConvertToSyslog $3 "all"
+			shift 2 # shift past current argument and value
+			shift # shift past old print-function arg
+			;;
+		*)
+			DisplayUsageFn -2 "Unknown Option: $opt"
+			;;
+	esac
+done
+
+exit 0
