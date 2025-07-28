@@ -46,8 +46,8 @@ nmap <S-Left> <C-w><Left>
 nmap <S-Right> <C-w><Right>
 
 " vimgrep, auto-load copen, browse through code with pattern
-nmap <A-Down> <C-w><Down><Down><CR>
-nmap <A-Up> <C-w><Down><Up><CR>
+nmap <C-Down> <C-w><Down><Down><CR>
+nmap <C-Up> <C-w><Down><Up><CR>
 nmap <C-x><C-Up> :vimgrep <cword> **/*.[ch] <CR><CR>:copen<CR><CR>
 nmap <S-x><S-Up> :vimgrep <cword> % <CR><CR>:copen<CR><CR>
 nmap <C-x><C-Down> :cclose<CR><CR>
