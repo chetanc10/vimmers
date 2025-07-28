@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# subversion editor setting
+export SVN_EDITOR=vim
+# Git editor setting
+export GIT_EDITOR=vim
+# bash default editor setting
+export EDITOR=vim
