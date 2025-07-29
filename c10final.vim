@@ -1,6 +1,6 @@
 
 " Decrease the timeoutlen to help faster keymap handling
-set timeoutlen=300
+set timeoutlen=200
 
 " comments.vim uses Ctrl-C and Ctrl-X for comment/uncomment (WIERD!)
 " Ctrl-X default behaviour in vim is to decrement a number by 1
