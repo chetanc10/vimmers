@@ -11,6 +11,7 @@ install [plugin] - install given vim plugin from github
 remove [plugin]  - remove a plugin
 update           - updates plugins installed via vim-plug all at once
 "
+	exit $?
 }
 
 vimplug_rcf=${HOME}/.vim-plug-vimrc

@@ -2,7 +2,7 @@
 This vim enhancement package sets up various vim parameter configurations and functions and most importantly helps installing vim plugins from github via vim-plug. More about vim-plug at https://github.com/junegunn/vim-plug.
 
 # Installation
-Using basherbee ```basherbee install chetanc10/vimmers```  
+Using basherbee: ```basherbee install chetanc10/vimmers```  
 
 # Features
 ## c10vimrc
