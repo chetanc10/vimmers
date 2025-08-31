@@ -6,8 +6,9 @@ call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'preservim/nerdtree'
 Plug 'joe-skb7/cscope-maps'
-Plug 'vim-scripts/VisIncr'
 Plug 'vim-scripts/comments.vim'
-Plug 'vim-scripts/taglist.vim'
+
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
 call plug#end()

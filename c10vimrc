@@ -65,6 +65,33 @@ function! WdiffToggle()
     endif
 endfunction
 
+" vim diff view improvements
+" Users can Customize further by defining OnDiffStartStub() and OnDiffEndStub() in ~/.cvimrc
+function! OnDiffStart()
+	" Improve diff mode readability - https://www.ditig.com/256-colors-cheat-sheet
+	" Highlight lines added - white text, Blue3 bg
+	highlight DiffAdd    cterm=bold ctermfg=15  ctermbg=19  guibg=#0000af
+	" Highlight lines deleted - white text, DeepSkyBlue4 bg
+	highlight DiffDelete cterm=bold ctermfg=15  ctermbg=23  guibg=#005f5f
+	" Highlight lines changed - white text, Orange4 bg
+	highlight DiffChange cterm=bold ctermfg=15  ctermbg=94 guibg=#875f00
+	" Highlight altered segment inside changed line - white text, DarkRed bg
+	highlight DiffText   cterm=bold ctermfg=15  ctermbg=88 guibg=#870000
+	" Let users override above highlight defaults as they like
+	if exists("*OnDiffStartStub") | call OnDiffStartStub() | endif
+endfunction
+function! OnDiffEnd()
+	" Let users override above highlight defaults as they like
+	if exists("*OnDiffEndStub") | call OnDiffEndStub() | endif
+endfunction
+augroup DiffWrapToggle
+	autocmd!
+	" When diff mode is enabled, update diff view colors and other parameters
+	autocmd OptionSet diff if &diff | call OnDiffStart() | endif
+	" When diff mode is disabled, reset parameters updated in OnDiffStart()
+	autocmd OptionSet diff if !&diff | call OnDiffEnd() | endif
+augroup END
+
 " toggle 80-column limiter in any vim window using '\'+'l'
 nnoremap <leader>l :call LimiteToggle()<cr>
 function! LimiteToggle()
