@@ -42,6 +42,29 @@ if exists('g:loaded_fzf_vim')
 	nnoremap <C-f>h :History<CR>
 endif
 
+if exists('g:loaded_session')
+	" If 'vim-session' loaded, do post-load configuration and setup keymaps
+	let g:session_autoload = 'no'
+	let g:session_autosave = 'no'
+
+	nnoremap <leader>so :OpenSession<Space>
+	nnoremap <leader>ss :SaveSession<Space>
+	nnoremap <leader>sd :DeleteSession<CR>
+	nnoremap <leader>sg :call SaveSessionGitBranch()<CR>
+	function! SaveSessionGitBranch()
+		let branch_name = system('git rev-parse --abbrev-ref HEAD')
+		if empty(branch_name)
+			echoerr "Current session is no under a git repo!"
+			return
+		endif
+		let repo_name = system('basename $(git rev-parse --show-toplevel)')
+		let repo_name = substitute(repo_name, '\n', '', '')
+		let branch_name = substitute(branch_name, '\n', '', '')
+		let branch_name = substitute(branch_name, '/', '_', 'g')
+		execute 'SaveSession ' . repo_name . '-' . branch_name
+	endfunction
+endif
+
 " USER defined final customizations are sourced using ~/.cvimrc
 " User keymaps, functions, settings, etc shall be kept in ~/.cvimrc
 " Note: vim-plug based setup is done using 'vimplugs' bash command
