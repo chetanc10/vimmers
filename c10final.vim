@@ -31,15 +31,19 @@ nnoremap <leader>cd :cs find d<Space>
 nnoremap <leader>ca :cs find a<Space>
 
 if exists('g:loaded_fzf_vim')
-	" If fzf.vim is loaded, setup keymap to invoke certain features
-	nnoremap <C-f>f :Files<CR>
+	" setup keymap to invoke certain fern features
+	nnoremap <C-f>f  :Files<CR>
 	nnoremap <C-f>gf :GFiles<CR>
-	nnoremap <C-f>l :Lines<CR>
+	nnoremap <C-f>l  :Lines<CR>
 	nnoremap <C-f>bl :BLines<CR>
-	nnoremap <C-f>c :Commits<CR>
+	nnoremap <C-f>c  :Commits<CR>
 	nnoremap <C-f>bc :BCommits<CR>
-	nnoremap <C-f>m :Maps<CR>
-	nnoremap <C-f>h :History<CR>
+	nnoremap <C-f>m  :Maps<CR>
+	nnoremap <C-f>h  :History<CR>
+	" Disable preview for fzf Files 
+	let g:fzf_files_options = '--no-preview'
+	" Make the layout display the prompt at the top of the results
+    let $FZF_DEFAULT_OPTS = '--layout=reverse'
 endif
 
 if exists('g:loaded_session')
