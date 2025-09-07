@@ -33,6 +33,7 @@ case $1 in
 		vim -c ":PlugUpdate"
 		;;
 	remove)
+		[ -z $2 ] && echo "Error: Need plugin string to remove!" && _usage -4
 		shift 1
 		epath="$(printf '%s' "${@}" | sed 's/\//\\\//g')"
 		sed -i "/${epath}/d" ${vimplug_rcf}
