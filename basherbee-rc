@@ -6,3 +6,6 @@ export SVN_EDITOR=vim
 export GIT_EDITOR=vim
 # bash default editor setting
 export EDITOR=vim
+
+# key-map to invoke "Open vim autochecking for previous vim-sessions"
+bind -x '"\C-e":"[ -f Session.vim ] && vim -S Session.vim || vim"'

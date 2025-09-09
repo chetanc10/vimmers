@@ -6,9 +6,6 @@ call plug#begin()
 " plugin to run Git commands within vim
 Plug 'tpope/vim-fugitive'
 
-" plugin to show a file-tree view in vim
-Plug 'preservim/nerdtree'
-
 " plugin to setup cscope keymaps for vim with builtin cscope support
 Plug 'joe-skb7/cscope-maps'
 

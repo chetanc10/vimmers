@@ -51,22 +51,49 @@ if exists('g:loaded_session')
 	let g:session_autoload = 'no'
 	let g:session_autosave = 'no'
 
-	nnoremap <leader>so :OpenSession<Space>
-	nnoremap <leader>ss :SaveSession<Space>
-	nnoremap <leader>sd :DeleteSession<CR>
-	nnoremap <leader>sg :call SaveSessionGitBranch()<CR>
-	function! SaveSessionGitBranch()
-		let branch_name = system('git rev-parse --abbrev-ref HEAD')
-		if empty(branch_name)
-			echoerr "Current session is no under a git repo!"
-			return
+	" Try open 'repo_name'-'branch_name'.vim session if git project
+	" On failure, try 'dir_name'-Session.vim, if that fails, do nothing
+	nnoremap <silent> <leader>so :call OpenSessionProj()<CR>
+    function! OpenSessionProj()
+		if system('git rev-parse --is-inside-work-tree 2>&1') =~ 'true'
+			let branch_name = system('git rev-parse --abbrev-ref HEAD')
+            let branch_name = trim(substitute(branch_name, '/', '_', 'g'))
+            let repo_name = trim(system('basename $(git rev-parse --show-toplevel)'))
+			let sname = '~/.vim/sessions/' . repo_name . '-' . branch_name . '.vim'
+			if filereadable(expand(sname))
+				execute 'OpenSession ' . repo_name . '-' . branch_name
+				return
+			endif
+        endif
+		" pwd is not git repo or has no branch-session, try Session.vim
+		let sname = '~/.vim/sessions/' . fnamemodify(getcwd(), ':t') . '.Session.vim'
+		if filereadable(expand(sname))
+			execute 'OpenSession ' . substitute(fnamemodify(sname, ':t'), '\.vim$', '', '')
 		endif
-		let repo_name = system('basename $(git rev-parse --show-toplevel)')
-		let repo_name = substitute(repo_name, '\n', '', '')
-		let branch_name = substitute(branch_name, '\n', '', '')
-		let branch_name = substitute(branch_name, '/', '_', 'g')
-		execute 'SaveSession ' . repo_name . '-' . branch_name
+    endfunction
+
+	" Delete session
+	nnoremap <silent> <leader>sd :DeleteSession<CR>
+
+	" Normal save session
+	nnoremap <silent> <leader>ss :SaveSession<Space>
+
+	" Try save 'repo_name'-'branch_name'.vim session if git project
+	" On failure, save 'dir_name'-Session.vim
+	nnoremap <silent> <leader>sg :call SaveSessionGitBranch()<CR>
+	function! SaveSessionGitBranch()
+		if system('git rev-parse --is-inside-work-tree 2>&1') =~ 'true'
+			let branch_name = system('git rev-parse --abbrev-ref HEAD')
+			let branch_name = trim(substitute(branch_name, '/', '_', 'g'))
+			let repo_name = trim(system('basename $(git rev-parse --show-toplevel)'))
+			execute 'SaveSession ' . repo_name . '-' . branch_name
+		else
+			let dname = fnamemodify(getcwd(), ':t')
+			echo "Session not in git repo. Saving to " . dname . ".Session.vim..."
+			execute 'SaveSession ' . dname . '.Session'
+		endif
 	endfunction
+
 endif
 
 " USER defined final customizations are sourced using ~/.cvimrc
