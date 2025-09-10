@@ -31,7 +31,7 @@ nnoremap <leader>cd :cs find d<Space>
 nnoremap <leader>ca :cs find a<Space>
 
 if exists('g:loaded_fzf_vim')
-	" setup keymap to invoke certain fern features
+	" setup keymap to invoke certain fzf features
 	nnoremap <C-f>f  :Files<CR>
 	nnoremap <C-f>gf :GFiles<CR>
 	nnoremap <C-f>l  :Lines<CR>
@@ -94,6 +94,38 @@ if exists('g:loaded_session')
 		endif
 	endfunction
 
+endif
+
+if exists('g:loaded_fern')
+	function! FernSmartOpen() abort
+		return fern#smart#leaf(
+					\ "\<Plug>(fern-action-open)",
+					\ "\<Plug>(fern-action-expand)",
+					\ "\<Plug>(fern-action-collapse)")
+	endfunction
+
+	augroup FernCustomMappings
+		autocmd!
+		autocmd FileType fern call SetupFernMappings()
+	augroup END
+
+	function! SetupFernMappings() abort
+		" Map <CR> to smart open/expand/collapse using expression mapping
+		execute 'nmap <buffer><expr> <CR> FernSmartOpen()'
+		" Map 'x' to collapse folder instead of 'h'
+		"autocmd FileType fern unmap h
+		"autocmd FileType fern nnoremap <buffer> x <Plug>(fern-action-collapse)
+		execute 'unmap <buffer> h'
+		execute 'nnoremap <buffer> x <Plug>(fern-action-collapse)'
+	endfunction
+
+	let g:fern#renderer#default#leading = ' '
+	let g:fern#renderer#default#collapsed_symbol = '+ '
+	let g:fern#renderer#default#expanded_symbol = '- '
+	let g:fern#disable_viewer_smart_cursor = 1
+	let g:fern#renderer#default#leaf_symbol = ". "
+
+	nnoremap <leader>F :Fern . -drawer -toggle<CR>
 endif
 
 " USER defined final customizations are sourced using ~/.cvimrc

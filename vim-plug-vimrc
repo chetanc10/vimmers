@@ -20,4 +20,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
 
+" plugin for file-explorer view (Fern)
+Plug 'lambdalisue/fern.vim'
+
 call plug#end()
