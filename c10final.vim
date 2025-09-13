@@ -40,6 +40,7 @@ if exists('g:loaded_fzf_vim')
 	nnoremap <C-f>bc :BCommits<CR>
 	nnoremap <C-f>m  :Maps<CR>
 	nnoremap <C-f>h  :History<CR>
+	nnoremap <C-f>rg :Rg <C-R>=expand("<cword>")<CR><CR>
 	" Disable preview for fzf Files 
 	let g:fzf_files_options = '--no-preview'
 	" Make the layout display the prompt at the top of the results
