@@ -96,6 +96,46 @@ if exists('g:loaded_session')
 
 endif
 
+if exists('g:loaded_fugitive')
+	"""""""""""" Invoke fugitive Git command
+	nnoremap <leader>g :Git<CR>
+	"""""""""""" Show current git branch name
+	nnoremap <leader>gb :Git rev-parse --abbrev-ref HEAD<CR><CR>
+	"""""""""""" show all branch and highlight current branch
+	nnoremap <leader>gba :echo system('git branch -a')<CR>
+	"""""""""""" Stage (git add) current file
+	nnoremap <leader>ga :Gwrite<CR>
+	"""""""""""" Commit changes
+	nnoremap <leader>gc :Git commit -s -v <CR>
+	"""""""""""" Commit changes with message directly
+	nnoremap <leader>gcm :Git commit -s -m<Space>
+	"""""""""""" Revert current file (git checkout)
+	nnoremap <leader>gco :Gread<bar>w<CR>
+	"""""""""""" Open fugitive Git diff for current file in vertical split
+	nnoremap <leader>gd :Gvdiffsplit<CR>
+	"""""""""""" Open fugitive Git diff for repo in vertical split
+	nnoremap <leader>gD :Git diff<CR>
+	"""""""""""" Pull changes
+	nnoremap <leader>gl :Git pull --rebase<CR>
+	"""""""""""" Git log TODO fix git-log family not responding
+	"nnoremap <leader>glt :Git log<CR>
+	"nnoremap <leader>gll :Git log --graph --pretty=oneline --abbrev-commit<CR>
+	"""""""""""" Open fugitive Git status
+	nnoremap <leader>gs :Git status<CR>
+	nnoremap <leader>gsm :Git status -uno<CR>
+	nnoremap <leader>gss :Git status -s<CR>
+	"""""""""""" Git config listing
+	nnoremap <leader>gcfg :Git config -l<CR>
+	"""""""""""" Push changes
+	nnoremap <leader>gp :Git push<CR>
+	"""""""""""" Git reset hard
+	nnoremap <leader>grh :Git reset --hard<Space>
+	"""""""""""" Show git remote url
+	nnoremap <leader>grv :Git remote -v<CR>
+	"""""""""""" Show git blame for the current line
+	nnoremap <leader>gbl :Git blame<CR>
+endif
+
 if exists('g:loaded_fern')
 	function! FernSmartOpen() abort
 		return fern#smart#leaf(
