@@ -117,10 +117,11 @@ if exists('g:loaded_fugitive')
 	"""""""""""" Open fugitive Git diff for repo in vertical split
 	nnoremap <leader>gD :Git diff<CR>
 	"""""""""""" Pull changes
-	nnoremap <leader>gl :Git pull --rebase<CR>
-	"""""""""""" Git log TODO fix git-log family not responding
-	"nnoremap <leader>glt :Git log<CR>
-	"nnoremap <leader>gll :Git log --graph --pretty=oneline --abbrev-commit<CR>
+	nnoremap <leader>gll :Git pull --rebase<CR>
+	"""""""""""" Git log normal, pretty-all, pretty-current-file
+	nnoremap <leader>glog :Git log<CR>
+	nnoremap <leader>glt :Git log --pretty=format:'%C(yellow)%h %Cblue%ad %Creset%s%Cgreen [%cn] %Cred%d' --decorate --date=format:'%d-%b`%y %H:%M %z'<CR>
+	nnoremap <leader>glf :Git log --pretty=format:'%C(yellow)%h %Cblue%ad %Creset%s%Cgreen [%cn] %Cred%d' --decorate --date=format:'%d-%b`%y %H:%M %z' %<CR>
 	"""""""""""" Open fugitive Git status
 	nnoremap <leader>gs :Git status<CR>
 	nnoremap <leader>gsm :Git status -uno<CR>
