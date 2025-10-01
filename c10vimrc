@@ -45,12 +45,14 @@ nmap <S-Up> <C-w><Up>
 nmap <S-Left> <C-w><Left>
 nmap <S-Right> <C-w><Right>
 
-" vimgrep, auto-load copen, browse through code with pattern
-nmap <C-Down> <C-w><Down><Down><CR>
-nmap <C-Up> <C-w><Down><Up><CR>
-nmap <C-x><C-Up> :vimgrep <cword> **/*.[ch] <CR><CR>:copen<CR><CR>
-nmap <S-x><S-Up> :vimgrep <cword> % <CR><CR>:copen<CR><CR>
+" Quickfix keymaps
+nmap <C-Down> :cn<CR>
+nmap <C-Up> :cp<CR>
 nmap <C-x><C-Down> :cclose<CR><CR>
+
+" vimgrep/quickfix ops to find <cword> in current file or directory
+nmap <S-x><S-Up> :vimgrep <cword> % <CR><CR>:copen<CR><CR>
+nmap <C-x><C-Up> :vimgrep <cword> **/*.[ch] <CR><CR>:copen<CR><CR>
 
 " add space in normal mode
 nnoremap <space> i<space><Esc>
