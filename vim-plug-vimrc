@@ -23,4 +23,7 @@ Plug 'xolox/vim-session'
 " plugin for file-explorer view (Fern)
 Plug 'lambdalisue/fern.vim'
 
+" plugin for enhanced quickfix navigation and on-the-go quickfix update
+Plug 'chetanc10/cuefix.vim'
+
 call plug#end()
