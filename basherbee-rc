@@ -12,5 +12,5 @@ bind -x '"\C-e":"[ -f Session.vim ] && vim -S Session.vim || vim"'
 
 if [ -d "$(find ~/.vim -type d -name fern.vim | head -n1)" ]; then
 	# keymap to invoke "Open vim with Fern file explorer view"
-	bind -x '"\C-f":"vim -c '\''Fern . -drawer'\''"'
+	bind -x '"\C-f":"vim -c '\''Fern . -drawer -keep'\''"'
 fi
