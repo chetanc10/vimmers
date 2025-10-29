@@ -6,11 +6,11 @@ call plug#begin()
 " plugin to run Git commands within vim
 Plug 'tpope/vim-fugitive'
 
+" plugin to comment/uncomment 1 or more lines
+Plug 'tpope/vim-commentary'
+
 " plugin to setup cscope keymaps for vim with builtin cscope support
 Plug 'joe-skb7/cscope-maps'
-
-" plugin to comment/uncomment 1 or more lines
-Plug 'vim-scripts/comments.vim'
 
 " plugin for fuzzy finder integration with vim
 Plug 'junegunn/fzf.vim'
