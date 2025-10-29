@@ -14,6 +14,10 @@ set shiftwidth=4
 " toggle paste mode; usful to copy exact text b/w vim files
 set pastetoggle=<F2>
 
+if &term =~ 'tmux-256color'
+	colorscheme ron
+endif
+
 " for Tag-list
 filetype plugin on
 
@@ -40,15 +44,38 @@ imap <c-x><c-a> <Esc>:wqa!<CR>
 nmap <c-x><c-a> <Esc>:wqa<CR>
 
 " window switching made easier
-nmap <S-Down> <C-w><Down>
-nmap <S-Up> <C-w><Up>
-nmap <S-Left> <C-w><Left>
-nmap <S-Right> <C-w><Right>
+if &term !~ 'tmux-256color'
+	nmap <S-Down> <C-w><Down>
+	nmap <S-Up> <C-w><Up>
+	nmap <S-Left> <C-w><Left>
+	nmap <S-Right> <C-w><Right>
+else
+	" keymaps for vim  inside tmux
+	nmap <Esc>[1;2A <C-w>k
+	nmap <Esc>[1;2B <C-w>j
+	nmap <Esc>[1;2C <C-w>l
+	nmap <Esc>[1;2D <C-w>h
+endif
+
+" Send Ctrl+<left/right> keystrokes properly from tmux
+if &term =~ 'tmux-256color'
+	" Ctrl+right moves cursor to next word
+	" Ctrl+left moves cursor to prev word
+	nnoremap <Esc>[1;5C <C-Right>
+	inoremap <Esc>[1;5C <C-Right>
+	nnoremap <Esc>[1;5D <C-Left>
+	inoremap <Esc>[1;5D <C-Left>
+endif
 
 " Quickfix keymaps
-nmap <C-Down> :cn<CR>
-nmap <C-Up> :cp<CR>
 nmap <C-x><C-Down> :cclose<CR><CR>
+if &term !~ 'tmux-256color'
+	nmap <C-Down> :cn<CR>
+	nmap <C-Up> :cp<CR>
+else
+	nnoremap <Esc>[1;5A :cp<CR>
+	nnoremap <Esc>[1;5B :cn<CR>
+endif
 
 " vimgrep/quickfix ops to find <cword> in current file or directory
 nmap <S-x><S-Up> :vimgrep <cword> % <CR><CR>:copen<CR><CR>
