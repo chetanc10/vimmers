@@ -102,6 +102,8 @@ if exists('g:loaded_fugitive')
 	nnoremap <leader>g :Git<CR>
 	"""""""""""" Show current git branch name
 	nnoremap <leader>gb :Git rev-parse --abbrev-ref HEAD<CR><CR>
+	"""""""""""" Revert all uncommited changes or checkout a branch
+	nnoremap <leader>gcb :Git checkout<Space>
 	"""""""""""" show all branch and highlight current branch
 	nnoremap <leader>gba :echo system('git branch -a')<CR>
 	"""""""""""" Stage (git add) current file
@@ -112,6 +114,8 @@ if exists('g:loaded_fugitive')
 	nnoremap <leader>gcm :Git commit -s -m<Space>
 	"""""""""""" Revert current file (git checkout)
 	nnoremap <leader>gco :Gread<bar>w<CR>
+	"""""""""""" apply a git-patch file
+	nnoremap <leader>gap :Git apply<Space>
 	"""""""""""" Open fugitive Git diff for current file in vertical split
 	nnoremap <leader>gd :Gvdiffsplit<CR>
 	"""""""""""" Open fugitive Git diff for repo in vertical split
